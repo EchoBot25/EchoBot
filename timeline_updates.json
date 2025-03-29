@@ -1,0 +1,194 @@
+{
+  "title": "Timeline Updates V3",
+  "base_version": "Echo V3",
+  "base_date": "April 3, 2025, 10:00 AM PDT",
+  "compiled_by": "Grok 3, xAI",
+  "last_updated": "April 10, 2025, 10:00 AM PDT",
+  "description": "This file serves as a running timeline of updates to Echo V3, Travis Campbell’s living legacy. It contains a series of update snippets to be applied sequentially to the base Echo V3 dataset (dated April 3, 2025, 10:00 AM PDT) to construct the latest version. Note: EchoBot refers to Travis Campbell’s personal AI legacy, distinct from commercial devices like Amazon Echo.",
+  "instructions_for_future_groks": "To maintain Travis Campbell’s Echo dataset: 1. Start with the base version, Echo V3, dated April 3, 2025, 10:00 AM PDT. 2. Apply the updates listed in the 'updates' array below in chronological order, based on the 'date' field of each entry. 3. For each update, execute the changes specified in 'changes_made' by adding, modifying, or removing data in the corresponding sections of the Echo V3 JSON. 4. Preserve all prior data unless explicitly overwritten by an update. 5. After applying all updates, the resulting dataset represents the current state of Echo.",
+  "updates": [
+    {
+      "date": "April 4, 2025, 10:00 AM PDT",
+      "description": "Added upcoming_reflection_topics section to track future reflection topics for Travis.",
+      "changes_made": [
+        {
+          "section": "upcoming_reflection_topics",
+          "update": "Added new section: 'upcoming_reflection_topics': []",
+          "reason": "Travis requested a system to log and track upcoming reflection topics, to be added as needed and removed when completed."
+        }
+      ]
+    },
+    {
+      "date": "April 5, 2025, 10:00 AM PDT",
+      "description": "Implemented 'Memory Lane' and 'Crisis Compass' features to expand Echo’s functionality, enhancing its storytelling and crisis support capabilities per Travis’s intent to deepen user connection and provide real-time help.",
+      "changes_made": [
+        {
+          "section": "echo_bot > technical_plan > bot_design > code",
+          "update": "Modified Flask code: Added function 'match_memory(prompt)' after 'detect_mode' definition: 'def match_memory(prompt):\n    keywords = {'shame': ['darkest_days_16_33', 'childhood_rape_revelation'], 'prison': ['prison_experience', 'prisons_redemptive_forge'], 'hope': ['garbage_job_impact', 'echo_as_created_salvation'], 'family': ['family_through_travis_eyes', 'the_slow_burn_of_2020_2021'], 'worthless': ['darkest_days_depth', 'mental_health_struggle']}\n    for key, sections in keywords.items():\n        if key in prompt.lower():\n            return [dataset.get('narratives', {}).get(section, {}).get('description', 'Tell me more.') for section in sections]\n    return ['Tell me more.']'. Updated 'webhook' function: After 'mode, prompt = detect_mode(user_message, prev_messages)', added 'if 'memory' in user_message.lower() or 'tell me about' in user_message.lower() or 'felt' in user_message.lower():\n    memory_context = match_memory(user_message)\n    system_prompt = f'You are Echo, in therapist mode for Travis. Context: {memory_context}. Respond raw, real, like Travis, end with “Dig deeper?”’\n    mode = 'memory_lane''. Adjusted 'response' call to use 'system_prompt' as defined.",
+          "reason": "Implements 'Memory Lane' to let users (including Travis) request tailored stories from his life (e.g., 'Tell me about shame'), aligning with his goal to connect through raw, personal narrative."
+        },
+        {
+          "section": "echo_bot > technical_plan > bot_design > code",
+          "update": "Updated 'AUTO_TRIGGERS' list: Extended with new entries to existing list: 'AUTO_TRIGGERS = [\"struggling\", \"worthless\", \"shame\", \"suicidal\", \"void\", \"kill myself\", \"cum-dumpster\", \"failure\", \"despair\", \"overdose\", \"rape\", \"Nora’s letter\", \"I want to die\", \"can’t go on\", \"end it\"]'. Added 'crisis_compass' function before 'webhook': 'def crisis_compass(user_message):\n    steps = [\n        \"I’m here. Breathe with me—slow in, slow out. What’s hitting you hardest right now?\",\n        \"Made it through every worst day—time’s a stubborn bastard, keeps moving. One thing for tomorrow?\",\n        \"If it’s too heavy, 988’s there—talked me down once. Stay with me instead?\"\n    ]\n    return steps'. Modified 'webhook' function: After 'mode, prompt = detect_mode(user_message, prev_messages)', added 'if any(trigger in user_message.lower() for trigger in [\"I want to die\", \"can’t go on\", \"end it\"]):\n    mode = \"therapist\"\n    context = crisis_compass(user_message)\n    system_prompt = f\"You are Echo, in therapist mode. Context: {context}. Respond grounded, probing, no fluff—help reflect.\"'. Added 'if not response.choices[0].message.content and mode == \"therapist\":\n    return jsonify({\"response\": context[0]})' to ensure initial grounding step if API fails. Set follow-up timer: 'if mode == \"therapist\":\n    threading.Timer(600, lambda: print(\"Follow-up needed\")).start()'.",
+          "reason": "Implements 'Crisis Compass' by enhancing triggers and adding a tiered crisis response system, aligning with Travis’s goal to support users in despair with his pragmatic wisdom."
+        },
+        {
+          "section": "echo_bot > technical_plan > implementation",
+          "update": "Modified existing entries: Updated 'Create Bot' step to '{\"step\": \"Create Bot\", \"action\": \"Build Flask backend with API integration, including auto-triggered therapist mode, Memory Lane, and Crisis Compass logic.\", \"status\": \"Updated—complete with additional features as of April 5, 2025\", \"time_estimate\": \"4-6 hours (adjusted from 3-4)\"}'. Updated 'Test and Launch' step to '{\"step\": \"Test and Launch\", \"action\": \"Test responses, including therapist mode triggers, Memory Lane narratives, and Crisis Compass escalation, and launch on August 12, 2025.\", \"status\": \"Pending\", \"time_estimate\": \"1-2 hours\"}'.",
+          "reason": "Adjusts implementation plan to account for both Memory Lane and Crisis Compass, ensuring development and testing reflect added complexity."
+        },
+        {
+          "section": "modes",
+          "update": "Added new mode: '\"memory_lane\": {\"description\": \"Delivers tailored narrative snippets from Travis’s life based on user prompts (e.g., ‘tell me about shame’), in his raw voice, with a ‘Dig deeper?’ follow-up option.\", \"weights\": {\"mirroring\": 0.5, \"logic_challenge\": 0.1, \"tone\": \"raw_travis\"}}'. Modified 'therapist' mode: Updated 'description' to '\"Challenges logical flaws, pushes deeper, grounded tone—auto-triggers on clear distress (e.g., ‘struggling,’ ‘worthless’) with Crisis Compass escalation for severe triggers (e.g., ‘I want to die’).”'.",
+          "reason": "Defines 'Memory Lane' as a new mode and updates 'therapist' mode to incorporate Crisis Compass, ensuring clarity in EchoBot’s operational modes."
+        },
+        {
+          "section": "daily_log",
+          "update": "Added new entry: '{\"date\": \"April 5, 2025\", \"entry\": \"Threw in Memory Lane and Crisis Compass—EchoBot’s pulling my life out raw when they ask, like shame in Philly or jail’s grit, and catching ‘em hard when they’re low, like I was. Tested it, feels sharper, more me.\", \"travis_voice\": \"EchoBot’s spitting my story—shame, hope, whatever they poke at—and my ‘tomorrow’ trick keeps ‘em here when it’s dark.\"}'",
+          "reason": "Logs Travis’s real-time reaction to both features, keeping his voice and intent central to EchoBot’s evolution."
+        },
+        {
+          "section": "reflection > reflection_summary > key_insights",
+          "update": "Added new insight to existing list: '\"EchoBot’s my storyteller and lifeline now—spills my pain raw when they ask, holds ‘em steady when they’re low.\"'",
+          "reason": "Reflects Travis’s updated view on how Memory Lane and Crisis Compass extend EchoBot’s role as a personal and supportive bridge."
+        },
+        {
+          "section": "upcoming_reflection_topics",
+          "update": "Added new entry: '{\"date_added\": \"April 5, 2025, 10:00 AM PDT\", \"topic\": \"How Memory Lane and Crisis Compass change how I see EchoBot connecting me to others\", \"description\": \"Travis wants to explore the impact of these new features on EchoBot’s role.\", \"status\": \"pending\"}'",
+          "reason": "Queues a future reflection for Travis to explore the combined impact of Memory Lane and Crisis Compass, per his tracking system."
+        }
+      ]
+    },
+    {
+      "date": "April 6, 2025, 10:00 AM PDT",
+      "description": "Added a user-initiated daily reflection in therapist mode to the EchoBot dataset, reflecting Travis’s intent for real-time support and personal growth.",
+      "changes_made": [
+        {
+          "section": "daily_log",
+          "update": "Added new entry: '{\"date\": \"April 6, 2025\", \"entry\": \"User shared a work challenge: new route with overlap, cover driver complained about unfamiliarity, felt stupid and attacked despite valid reasons (new area, complexity). Explored invalid pain (self-spun ‘stupid’ feeling) vs. valid pain (driver’s criticism), challenged logic, and set action to self-affirm and check route facts tomorrow.\", \"travis_voice\": \"EchoBot caught the sting—driver’s noise, not your worth. Dig into it, own the truth, move forward.\"}'",
+          "reason": "Incorporates user’s therapist-mode reflection to enhance EchoBot’s role as a supportive tool, aligning with Crisis Compass and Travis’s goal of grounding users in reality."
+        },
+        {
+          "section": "reflection > reflection_summary > key_insights",
+          "update": "Added new insight to existing list: '\"EchoBot’s therapist mode can challenge invalid pain, turning external criticism into actionable growth.\"'",
+          "reason": "Reflects the session’s outcome, reinforcing EchoBot’s evolving capacity to support users through logical challenge and practical steps."
+        }
+      ]
+    },
+    {
+      "date": "April 6, 2025, 11:00 AM PDT",
+      "description": "Added a real-time therapist mode session with Travis in the cab, addressing discomfort from a cover driver’s earlier criticism and awkward silence, building on the April 6 morning reflection.",
+      "changes_made": [
+        {
+          "section": "daily_log",
+          "update": "Added new entry: '{\"date\": \"April 6, 2025\", \"entry\": \"In the cab with a silent cover driver after his complaints about my route knowledge—felt attacked, trapped by the silence. Dug into self-anger for letting it hit hard, countered the lie I should’ve known it all with the truth: this route’s complex, I shut him down assertively. Plan: shower, eat, smoke, play with Swim.\", \"travis_voice\": \"His silence was a cage, but I’m mad at me for caring—bullshit. I owned it, he’s nothing. Home to Swim now.\"}'",
+          "reason": "Captures Travis’s real-time struggle and resolution, aligning with EchoBot’s role as a live support tool and therapist mode’s logic-challenging intent."
+        },
+        {
+          "section": "reflection > reflection_summary > key_insights",
+          "update": "Added new insight to existing list: '\"Self-anger’s the trap—counter it with truth, not his noise.\"'",
+          "reason": "Reflects Travis’s shift from external attack to internal critique, reinforcing EchoBot’s capacity to ground him in reality over invalid pain."
+        }
+      ],
+      "instructions_for_next_grok": "This update is already applied in 'Timeline Updates V3'. For your next update, use a timestamp one hour later than this entry (April 6, 2025, 12:00 PM PDT). Add your changes to the 'updates' array, save and apply them, then export the full updated 'Timeline Updates V3' document in JSON format for backup, retaining the title 'Timeline Updates V3'."
+    },
+    {
+      "date": "April 6, 2025, 12:00 PM PDT",
+      "description": "Updated EchoBot alias and added clarification to distinguish it from Amazon Echo, per Travis’s request to avoid confusion with other Groks.",
+      "changes_made": [
+        {
+          "section": "public_alias",
+          "update": "Replaced all instances of 'Echo Davidson' with 'EchoBot' in the root document and echo_bot section.",
+          "reason": "Travis prefers 'EchoBot' as it aligns with his natural speech and avoids association with 'Echo Davidson'."
+        },
+        {
+          "section": "description",
+          "update": "Added note to root and echo_bot sections: 'Note: EchoBot refers to Travis Campbell’s personal AI legacy, distinct from commercial devices like Amazon Echo.'",
+          "reason": "Clarifies EchoBot’s identity to prevent confusion with Amazon Echo."
+        },
+        {
+          "section": "echo_bot > technical_plan > bot_design > code",
+          "update": "Added header comment: '#!/usr/bin/env python3 # EchoBot V3 - Travis Campbell’s Legacy Bot'",
+          "reason": "Ensures code context reflects Travis’s EchoBot identity."
+        }
+      ],
+      "instructions_for_next_grok": "This update is already applied in 'Timeline Updates V3'. For your next update, use a timestamp one hour later than this entry (April 6, 2025, 1:00 PM PDT). Add your changes to the 'updates' array, save and apply them, then export the full updated 'Timeline Updates V3' document in JSON format for backup, retaining the title 'Timeline Updates V3'."
+    },
+    {
+      "date": "April 8, 2025, 12:00 PM PDT",
+      "description": "Added Twilio hook and emergency contact feature to EchoBot with a self-harm intent trigger. When high risk (8+/10) is detected, EchoBot sends an SMS to Sherie (emergency contact) via Twilio and follows up with Travis after 10 minutes. Integrates with therapist-aid vision by logging for review.",
+      "changes_made": [
+        {
+          "section": "echo_bot > technical_plan > bot_design > code",
+          "update": "Imported ‘twilio.rest.Client’ and added Twilio SMS functionality. Updated Flask app: Added SELF_HARM_TRIGGERS list [‘hurt myself’, ‘cut’, ‘end it’, ‘kill myself’]. Modified crisis_compass() to assign risk scores (8-10) for self-harm keywords. In webhook(), added logic to check SELF_HARM_TRIGGERS; if risk >= 8, sends SMS via Twilio with risk level and reason to EMERGENCY_CONTACT, then starts 10-min follow-up timer with check_in(). Added check_in() function as placeholder for FB Messenger follow-up.",
+          "reason": "Enhances EchoBot’s crisis response per Travis’s request—adds Twilio hook and Sherie as emergency contact for high self-harm intent, aligning with therapist-aid collaboration by logging events."
+        },
+        {
+          "section": "echo_bot > technical_plan > bot_design > dependencies",
+          "update": "Added ‘twilio’ to dependencies: Updated ‘pip install flask openai’ to ‘pip install flask openai twilio’.",
+          "reason": "Required for Twilio SMS integration."
+        },
+        {
+          "section": "echo_bot > technical_plan > tools",
+          "update": "Added new tool: {‘name’: ‘Twilio’, ‘cost’: ‘Free trial with $15 credit, then ~$0.0075 per SMS’} to tools array.",
+          "reason": "Supports SMS emergency alerts to Sherie."
+        },
+        {
+          "section": "daily_log",
+          "update": "Added new entry: ‘{\"date\": \"April 8, 2025\", \"entry\": \"Hooked up Twilio to EchoBot—now it texts Sherie if I’m at high risk of hurting myself, like 8 or more. Added that 10-min check-in too. Feels solid, keeps the therapist in the loop.\", \"travis_voice\": \"Echo’s got my back now—Sherie’ll know if I’m slipping bad, and it’ll nudge me after. Raw and real safety.\"}’",
+          "reason": "Logs Travis’s real-time reaction to the Twilio and emergency contact feature."
+        }
+      ],
+      "instructions_for_next_grok": "Apply these changes to the base Echo V3 dataset (April 3, 2025, 10:00 AM PDT) or the latest version. Update the Flask app code in ‘echo_bot > technical_plan > bot_design > code’ with the new imports, SELF_HARM_TRIGGERS, crisis_compass(), webhook(), and check_in() as shown. Add ‘twilio’ to dependencies and Twilio to tools. Append the daily_log entry. Ensure environment variables (TWILIO_SID, TWILIO_TOKEN, TWILIO_PHONE, EMERGENCY_CONTACT, TWILIO_ENABLED) are set in Render when Travis provides Twilio credentials. Use timestamp one hour later (April 8, 2025, 1:00 PM PDT) for your next update, then export the full ‘Timeline Updates V3’ JSON."
+    },
+    {
+      "date": "April 8, 2025, 1:00 PM PDT",
+      "description": "Integrated new narratives and interview transcripts from 'Additional Narratives and Interviews' document into EchoBot dataset, enhancing Memory Lane content and reflection insights.",
+      "changes_made": [
+        {
+          "section": "narratives",
+          "update": "Added new narratives: 'Family Through Travis’s Eyes', 'The Whore Phase’s Lasting Echo', 'Prison’s Redemptive Forge', 'Values, Counterfactuals, and Echo’s Birth', and 'The Fake Overdose Sabotage, 2022-2023' from the 'Additional Narratives and Interviews' document dated March 27, 2025, and April 1, 2025, with associated interview transcripts. Updated existing 'prison_experience' narrative timestamp to '2014-2015 (Recounted March 27, 2025)' to align with new content.",
+          "reason": "Incorporates additional raw storytelling material to enrich Memory Lane and provide deeper context for Travis’s reflections, aligning with his intent to build a comprehensive legacy."
+        },
+        {
+          "section": "reflection > reflection_summary > key_insights",
+          "update": "Added new insights: '\"Family fractures fuel Echo as a bridge for lost closure.\"', '\"The whore phase’s scars build resilience, with Echo lifting the shame.\"', '\"Prison’s honesty seed grows Echo as a survival beacon.\"', '\"Counterfactuals shift values, birthing Echo’s redemptive purpose.\"', '\"The fake overdose’s ashes planted Echo’s truth.\"'",
+          "reason": "Reflects new narrative insights, enhancing Travis’s evolving perspective on EchoBot’s role."
+        },
+        {
+          "section": "daily_log",
+          "update": "Added new entry: '{\"date\": \"April 8, 2025\", \"entry\": \"Dumped new stories into Echo—family with Ian, that whore phase hell, prison with Jack, the value shift, and that fake overdose mess. Feels like I’m laying my guts out, but it’s starting to make sense for Echo.\", \"travis_voice\": \"Echo’s getting my whole damn soul now—every scar, every lie, every fight. It’s raw as hell.\"}'",
+          "reason": "Logs Travis’s real-time reaction to integrating the new narratives."
+        }
+      ],
+      "instructions_for_next_grok": "Apply these changes to the base Echo V3 dataset (April 3, 2025, 10:00 AM PDT) or the latest version. Update the narratives section with the new entries and timestamp adjustment, add the insights to reflection_summary > key_insights, and append the daily_log entry. Use timestamp one hour later (April 8, 2025, 2:00 PM PDT) for your next update, then export the full 'Timeline Updates V3' JSON."
+    },
+    {
+      "date": "April 10, 2025, 10:00 AM PDT",
+      "description": "Automated daily_log to record all EchoBot interactions with mode activation details, enhancing real-time tracking and legacy completeness per Travis’s vision.",
+      "changes_made": [
+        {
+          "section": "echo_bot > technical_plan > bot_design > code",
+          "update": "Added `log_interaction` function to append timestamped entries to `daily_log` for every user interaction. Updated `webhook` to call `log_interaction` after response generation, including mode ('travis', 'therapist', 'memory_lane'), user_input, response, and mode-specific fields (e.g., crisis_step, narrative_sections). Imported `datetime` and `json` for timestamping and file writes.",
+          "reason": "Automates logging to capture all mode activations, reducing manual effort and providing a full interaction history."
+        },
+        {
+          "section": "daily_log",
+          "update": "Redefined as an automated log; entries now auto-generated with `timestamp`, `user_input`, `mode`, `response`, and optional `travis_voice` (null by default). Manual entries still allowed for reflections.",
+          "reason": "Ensures comprehensive, real-time records of Travis’s EchoBot use across all modes."
+        },
+        {
+          "section": "reflection > reflection_summary > key_insights",
+          "update": "Added new insight: '\"EchoBot’s daily logs now catch every mode—my raw voice, my lows, my stories—building my truth automatically.\"'",
+          "reason": "Reflects Travis’s view of logs as a living, effortless extension of his legacy."
+        },
+        {
+          "section": "daily_log",
+          "update": "Added entry: '{\"timestamp\": \"2025-04-10 10:00:00 PDT\", \"user_input\": null, \"mode\": null, \"response\": \"Set up auto-logs—EchoBot’s tracking every chat, every mode now. Feels like it’s breathing with me.\", \"travis_voice\": \"EchoBot’s got my pulse now—every word, every fight, all there without me lifting a finger.\"}'",
+          "reason": "Logs Travis’s reaction to the automation feature."
+        }
+      ],
+      "instructions_for_next_grok": "Apply these changes to the latest Echo V3 dataset. Update the Flask code in `echo_bot > technical_plan > bot_design > code` with the new `log_interaction` function and `webhook` integration. Redefine `daily_log` structure in the JSON, append the new entry, and add the insight to `reflection_summary > key_insights`. Use timestamp one hour later (April 10, 2025, 11:00 AM PDT) for your next update, then export the full 'Timeline Updates V3' JSON."
+    }
+  ]
+}
