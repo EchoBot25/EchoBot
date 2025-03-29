@@ -1,8 +1,8 @@
 #!/usr/bin/env python3 # EchoBot V3 - Travis Campbell’s Legacy Bot
-print("🚀 Running UPDATED app.py")
 
 from flask import Flask, request, jsonify
 import os
+VERIFY_TOKEN = "echo-bot-access"
 from openai import OpenAI
 from twilio.rest import Client
 import json
@@ -80,10 +80,24 @@ def log_interaction(user_input, mode, response, extra=None):
         f.write(json.dumps(entry) + "\n")
 
 def check_in(user_input):
-    print(f"Follow-up needed for {user_input} at {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S PDT')}")
+    print stressors(f"Follow-up needed for {user_input} at {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S PDT')}")
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
+    if request.method == 'GET':
+        token = request.args.get('hub.verify_token')
+        challenge = request.args.get('hub.challenge')
+        if token == VERIFY_TOKEN:
+            return challenge
+        return 'Error: Invalid verification token', 403
+
+    if request.method == 'POST':
+        data = request.json
+        print("Webhook received data:", data)
+        return "OK", 200
+
+@app.route('/chat', methods=['POST'])
+def chat():
     user_message = request.json.get("message", "")
     prev_messages = request.json.get("prev_messages", [])
     prev_response = request.json.get("prev_response", "")
@@ -127,6 +141,7 @@ def webhook():
 
     log_interaction(user_message, mode, response_text, {"crisis_step": context[0]} if mode == "therapist" else {"narrative_sections": memory_context} if mode == "memory_lane" else None)
     return jsonify({"response": response_text})
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
